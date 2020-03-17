@@ -43,6 +43,8 @@ public protocol ChatItemMenuPresenterProtocol {
 public protocol ChatItemPresenterProtocol: AnyObject, ChatItemMenuPresenterProtocol {
     static func registerCells(_ collectionView: UICollectionView)
 
+    var isItemStickToTop: Bool { get }
+    
     var isItemUpdateSupported: Bool { get }
     func update(with chatItem: ChatItemProtocol)
 
@@ -55,6 +57,7 @@ public protocol ChatItemPresenterProtocol: AnyObject, ChatItemMenuPresenterProto
 }
 
 public extension ChatItemPresenterProtocol { // Optionals
+    var isItemStickToTop: Bool { return false }
     var canCalculateHeightInBackground: Bool { return false }
     func cellWillBeShown(_ cell: UICollectionViewCell) {}
     func cellWasHidden(_ cell: UICollectionViewCell) {}

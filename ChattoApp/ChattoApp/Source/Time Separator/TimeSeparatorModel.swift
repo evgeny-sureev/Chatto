@@ -49,6 +49,18 @@ extension Date {
         dateFormatter.dateFormat = "EEEE, MMM dd yyyy" // "Monday, Mar 7 2016"
         return dateFormatter
     }()
+    
+    private static let dmyFormatter: DateFormatter = {
+        let dateFormatter = DateFormatter()
+        dateFormatter.timeZone = TimeZone.autoupdatingCurrent
+        dateFormatter.locale = Locale(identifier: "en_US")
+        dateFormatter.dateFormat = "dd.MM.yyyy" // "02.01.2020"
+        return dateFormatter
+    }()
+    
+    static func dmy(_ dmy: String) -> Date {
+        return dmyFormatter.date(from: dmy)!
+    }
 
     func toWeekDayAndDateString() -> String {
         return Date.weekdayAndDateStampDateFormatter.string(from: self)

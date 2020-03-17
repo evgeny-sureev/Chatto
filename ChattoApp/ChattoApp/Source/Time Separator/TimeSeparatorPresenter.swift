@@ -55,6 +55,8 @@ class TimeSeparatorPresenter: ChatItemPresenterProtocol {
         collectionView.register(TimeSeparatorCollectionViewCell.self, forCellWithReuseIdentifier: cellReuseIdentifier)
     }
 
+    let isItemStickToTop = true
+    
     let isItemUpdateSupported = false
 
     func update(with chatItem: ChatItemProtocol) {}
@@ -77,6 +79,6 @@ class TimeSeparatorPresenter: ChatItemPresenterProtocol {
     }
 
     func heightForCell(maximumWidth width: CGFloat, decorationAttributes: ChatItemDecorationAttributesProtocol?) -> CGFloat {
-        return 24
+        return 32
     }
 }

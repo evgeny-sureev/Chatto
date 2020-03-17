@@ -43,14 +43,14 @@ class DemoChatMessageFactory {
         }
     }
 
-    class func makeTextMessage(_ uid: String, text: String, isIncoming: Bool) -> DemoTextMessageModel {
-        let messageModel = self.makeMessageModel(uid, isIncoming: isIncoming, type: TextMessageModel<MessageModel>.chatItemType)
+    class func makeTextMessage(_ uid: String, text: String, isIncoming: Bool, date: Date = Date()) -> DemoTextMessageModel {
+        let messageModel = self.makeMessageModel(uid, isIncoming: isIncoming, type: TextMessageModel<MessageModel>.chatItemType, date: date)
         let textMessageModel = DemoTextMessageModel(messageModel: messageModel, text: text)
         return textMessageModel
     }
 
-    class func makePhotoMessage(_ uid: String, image: UIImage, size: CGSize, isIncoming: Bool) -> DemoPhotoMessageModel {
-        let messageModel = self.makeMessageModel(uid, isIncoming: isIncoming, type: PhotoMessageModel<MessageModel>.chatItemType)
+    class func makePhotoMessage(_ uid: String, image: UIImage, size: CGSize, isIncoming: Bool, date: Date = Date()) -> DemoPhotoMessageModel {
+        let messageModel = self.makeMessageModel(uid, isIncoming: isIncoming, type: PhotoMessageModel<MessageModel>.chatItemType, date: date)
         let photoMessageModel = DemoPhotoMessageModel(messageModel: messageModel, imageSize: size, image: image)
         return photoMessageModel
     }
@@ -98,10 +98,10 @@ class DemoChatMessageFactory {
         return self.makePhotoMessage(uid, image: UIImage(named: imageName)!, size: imageSize, isIncoming: isIncoming)
     }
 
-    private class func makeMessageModel(_ uid: String, isIncoming: Bool, type: String) -> MessageModel {
+    private class func makeMessageModel(_ uid: String, isIncoming: Bool, type: String, date: Date = Date()) -> MessageModel {
         let senderId = isIncoming ? "1" : "2"
         let messageStatus = isIncoming || arc4random_uniform(100) % 3 == 0 ? MessageStatus.success : .failed
-        return MessageModel(uid: uid, senderId: senderId, type: type, isIncoming: isIncoming, date: Date(), status: messageStatus)
+        return MessageModel(uid: uid, senderId: senderId, type: type, isIncoming: isIncoming, date: date, status: messageStatus)
     }
 }
 
@@ -124,35 +124,63 @@ extension ChatItemType {
 extension DemoChatMessageFactory {
 
     private enum DemoMessage {
-        case text(String)
-        case image(String)
+        case text(String, Date)
+        case image(String, Date)
     }
 
     private static let overviewMessages: [DemoMessage] = [
-        .text("Welcome to Chatto! A lightweight Swift framework to build chat apps"),
-        .text("It calculates sizes in the background for smooth pagination and rotation, and it can deal with thousands of messages with a sliding data source"),
-        .text("Along with Chatto there's ChattoAdditions, with bubbles and the input component"),
-        .text("This is a TextMessageCollectionViewCell. It uses UITextView with data detectors so you can interact with urls: https://github.com/badoo/Chatto, phone numbers: 07400000000, dates: 3 jan 2016 and others"),
-        .image("pic-test-1"),
-        .image("pic-test-2"),
-        .image("pic-test-3"),
-        .text("Those were some PhotoMessageCollectionViewCell. With some fake data transfer"),
-        .text("Both Text and Photo cells inherit from BaseMessageCollectionViewCell which adds support for a failed icon and a timestamp you can reveal by swiping from the right"),
-        .text("Each message is paired with a Presenter. Each presenter is responsible to present a message by managing a corresponding UICollectionViewCell. New types of messages can be easily added by creating new types of presenters!"),
-        .text("Messages have different margins and only some bubbles show a tail. This is done with a decorator that conforms to ChatItemsDecoratorProtocol"),
-        .text("Failed/sending status are completly separated cells. This helps to keep cells them simpler. They are generated with the decorator as well, but other approaches are possible, like being returned by the DataSource or using more complex cells"),
-        .text("More info on https://github.com/badoo/Chatto. We are waiting for your pull requests!")
+        .text("Welcome to Chatto! A lightweight Swift framework to build chat apps", Date.dmy("19.02.2020")),
+        .text("It calculates sizes in the background for smooth pagination and rotation, and it can deal with thousands of messages with a sliding data source", Date.dmy("19.02.2020")),
+        .text("Along with Chatto there's ChattoAdditions, with bubbles and the input component", Date.dmy("19.02.2020")),
+        .text("This is a TextMessageCollectionViewCell. It uses UITextView with data detectors so you can interact with urls: https://github.com/badoo/Chatto, phone numbers: 07400000000, dates: 3 jan 2016 and others", Date.dmy("19.02.2020")),
+        .image("pic-test-1", Date.dmy("18.02.2020")),
+        .image("pic-test-2", Date.dmy("18.02.2020")),
+        .image("pic-test-3", Date.dmy("18.02.2020")),
+        .text("Those were some PhotoMessageCollectionViewCell. With some fake data transfer", Date.dmy("18.02.2020")),
+        .text("Both Text and Photo cells inherit from BaseMessageCollectionViewCell which adds support for a failed icon and a timestamp you can reveal by swiping from the right", Date.dmy("17.02.2020")),
+        .text("Each message is paired with a Presenter. Each presenter is responsible to present a message by managing a corresponding UICollectionViewCell. New types of messages can be easily added by creating new types of presenters!", Date.dmy("17.02.2020")),
+        .text("Messages have different margins and only some bubbles show a tail. This is done with a decorator that conforms to ChatItemsDecoratorProtocol", Date.dmy("17.02.2020")),
+        .text("Failed/sending status are completly separated cells. This helps to keep cells them simpler. They are generated with the decorator as well, but other approaches are possible, like being returned by the DataSource or using more complex cells", Date.dmy("17.02.2020")),
+        .text("More info on https://github.com/badoo/Chatto. We are waiting for your pull requests!", Date.dmy("17.02.2020")),
+        
+        .text("Welcome to Chatto! A lightweight Swift framework to build chat apps", Date.dmy("16.02.2020")),
+        .text("It calculates sizes in the background for smooth pagination and rotation, and it can deal with thousands of messages with a sliding data source", Date.dmy("16.02.2020")),
+        .text("Along with Chatto there's ChattoAdditions, with bubbles and the input component", Date.dmy("16.02.2020")),
+        .text("This is a TextMessageCollectionViewCell. It uses UITextView with data detectors so you can interact with urls: https://github.com/badoo/Chatto, phone numbers: 07400000000, dates: 3 jan 2016 and others", Date.dmy("16.02.2020")),
+        .image("pic-test-1", Date.dmy("16.02.2020")),
+        .image("pic-test-2", Date.dmy("16.02.2020")),
+        .image("pic-test-3", Date.dmy("16.02.2020")),
+        .text("Those were some PhotoMessageCollectionViewCell. With some fake data transfer", Date.dmy("16.02.2020")),
+        .text("Both Text and Photo cells inherit from BaseMessageCollectionViewCell which adds support for a failed icon and a timestamp you can reveal by swiping from the right", Date.dmy("16.02.2020")),
+        .text("Each message is paired with a Presenter. Each presenter is responsible to present a message by managing a corresponding UICollectionViewCell. New types of messages can be easily added by creating new types of presenters!", Date.dmy("16.02.2020")),
+        .text("Messages have different margins and only some bubbles show a tail. This is done with a decorator that conforms to ChatItemsDecoratorProtocol", Date.dmy("16.02.2020")),
+        .text("Failed/sending status are completly separated cells. This helps to keep cells them simpler. They are generated with the decorator as well, but other approaches are possible, like being returned by the DataSource or using more complex cells", Date.dmy("16.02.2020")),
+        .text("More info on https://github.com/badoo/Chatto. We are waiting for your pull requests!", Date.dmy("16.02.2020")),
+        
+        .text("Welcome to Chatto! A lightweight Swift framework to build chat apps", Date.dmy("15.02.2020")),
+        .text("It calculates sizes in the background for smooth pagination and rotation, and it can deal with thousands of messages with a sliding data source", Date.dmy("15.02.2020")),
+        .text("Along with Chatto there's ChattoAdditions, with bubbles and the input component", Date.dmy("15.02.2020")),
+        .text("This is a TextMessageCollectionViewCell. It uses UITextView with data detectors so you can interact with urls: https://github.com/badoo/Chatto, phone numbers: 07400000000, dates: 3 jan 2016 and others", Date.dmy("15.02.2020")),
+        .image("pic-test-1", Date.dmy("15.02.2020")),
+        .image("pic-test-2", Date.dmy("15.02.2020")),
+        .image("pic-test-3", Date.dmy("15.02.2020")),
+        .text("Those were some PhotoMessageCollectionViewCell. With some fake data transfer", Date.dmy("15.02.2020")),
+        .text("Both Text and Photo cells inherit from BaseMessageCollectionViewCell which adds support for a failed icon and a timestamp you can reveal by swiping from the right", Date.dmy("15.02.2020")),
+        .text("Each message is paired with a Presenter. Each presenter is responsible to present a message by managing a corresponding UICollectionViewCell. New types of messages can be easily added by creating new types of presenters!", Date.dmy("15.02.2020")),
+        .text("Messages have different margins and only some bubbles show a tail. This is done with a decorator that conforms to ChatItemsDecoratorProtocol", Date.dmy("15.02.2020")),
+        .text("Failed/sending status are completly separated cells. This helps to keep cells them simpler. They are generated with the decorator as well, but other approaches are possible, like being returned by the DataSource or using more complex cells", Date.dmy("15.02.2020")),
+        .text("More info on https://github.com/badoo/Chatto. We are waiting for your pull requests!", Date.dmy("15.02.2020"))
     ]
 
     private static func messages(fromDemoMessages demoMessages: [DemoMessage]) -> [MessageModelProtocol] {
         return demoMessages.map { (demoMessage) in
             let isIncoming: Bool = arc4random_uniform(100) % 2 == 0
             switch demoMessage {
-            case .text(let text):
-                return DemoChatMessageFactory.makeTextMessage(NSUUID().uuidString, text: text, isIncoming: isIncoming)
-            case .image(let name):
+            case .text(let text, let date):
+                return DemoChatMessageFactory.makeTextMessage(NSUUID().uuidString, text: text, isIncoming: isIncoming, date: date)
+            case .image(let name, let date):
                 let image = UIImage(named: name)!
-                return DemoChatMessageFactory.makePhotoMessage(NSUUID().uuidString, image: image, size: image.size, isIncoming: isIncoming)
+                return DemoChatMessageFactory.makePhotoMessage(NSUUID().uuidString, image: image, size: image.size, isIncoming: isIncoming, date: date)
             }
         }
     }
@@ -175,11 +203,11 @@ extension DemoChatMessageFactory {
     }
 
     private static let messagesSelectionMessages: [DemoMessage] = [
-        .text("Now you have an ability to select chat messages"),
-        .text("Press \"Select\" to enter selection mode"),
-        .text("Press \"Cancel\" to exit selection mode"),
-        .text("In selection mode all interactions with bubbles are disabled"),
-        .text("A message can be selected or deselected by tapping on a message cell")
+        .text("Now you have an ability to select chat messages", Date()),
+        .text("Press \"Select\" to enter selection mode", Date()),
+        .text("Press \"Cancel\" to exit selection mode", Date()),
+        .text("In selection mode all interactions with bubbles are disabled", Date()),
+        .text("A message can be selected or deselected by tapping on a message cell", Date())
     ]
 
     static func makeMessagesSelectionMessages() -> [MessageModelProtocol] {

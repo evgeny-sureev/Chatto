@@ -43,7 +43,8 @@ class TimeSeparatorCollectionViewCell: UICollectionViewCell {
     private func commonInit() {
         self.label.font = UIFont.systemFont(ofSize: 12)
         self.label.textAlignment = .center
-        self.label.textColor = UIColor.gray
+        self.label.textColor = UIColor.white
+        self.label.backgroundColor = UIColor.black
         self.contentView.addSubview(label)
     }
 
@@ -62,7 +63,20 @@ class TimeSeparatorCollectionViewCell: UICollectionViewCell {
 
     override func layoutSubviews() {
         super.layoutSubviews()
-        self.label.bounds.size = self.label.sizeThatFits(self.contentView.bounds.size)
+        self.label.bounds.size = self.label.sizeThatFits(self.contentView.bounds.size).bma_insetBy(dx: -8, dy: -4)
         self.label.center = self.contentView.center
+    }
+    
+    override func apply(_ layoutAttributes: UICollectionViewLayoutAttributes) {
+        guard let attributes = layoutAttributes as? ChatCollectionLayoutAttributes else {
+            return
+        }
+        label.layer.removeAllAnimations()
+        label.alpha = 1
+        if attributes.isSticking {
+            UIView.animate(withDuration: 0.3, delay: 1, options: UIView.AnimationOptions.curveEaseInOut, animations: {
+                self.label.alpha = 0
+            }, completion: nil)
+        }
     }
 }

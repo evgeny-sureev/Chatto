@@ -324,12 +324,11 @@ extension BaseChatViewController {
     }
 
     private func createLayoutModel(_ items: ChatItemCompanionCollection, collectionViewWidth: CGFloat) -> ChatCollectionViewLayoutModel {
-        typealias IntermediateItemLayoutData = (height: CGFloat?, bottomMargin: CGFloat)
-        typealias ItemLayoutData = (height: CGFloat, bottomMargin: CGFloat)
+        typealias IntermediateItemLayoutData = (height: CGFloat?, bottomMargin: CGFloat, isStickToTop: Bool)
 
         func createLayoutModel(intermediateLayoutData: [IntermediateItemLayoutData]) -> ChatCollectionViewLayoutModel {
             let layoutData = intermediateLayoutData.map { (intermediateLayoutData: IntermediateItemLayoutData) -> ItemLayoutData in
-                return (height: intermediateLayoutData.height!, bottomMargin: intermediateLayoutData.bottomMargin)
+                return ItemLayoutData(height: intermediateLayoutData.height!, bottomMargin: intermediateLayoutData.bottomMargin, isStickToTop: intermediateLayoutData.isStickToTop)
             }
             return ChatCollectionViewLayoutModel.createModel(collectionViewWidth, itemsLayoutData: layoutData)
         }
@@ -346,7 +345,7 @@ extension BaseChatViewController {
             } else {
                 itemsForMainThread.append((index: index, itemCompanion: itemCompanion))
             }
-            intermediateLayoutData.append((height: height, bottomMargin: bottomMargin))
+            intermediateLayoutData.append((height: height, bottomMargin: bottomMargin, isStickToTop: itemCompanion.presenter.isItemStickToTop))
         }
 
         if itemsForMainThread.count > 0 {

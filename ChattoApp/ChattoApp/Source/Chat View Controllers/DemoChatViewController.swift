@@ -43,6 +43,20 @@ class DemoChatViewController: BaseChatViewController {
         return BaseMessageHandler(messageSender: self.messageSender, messagesSelector: self.messagesSelector)
     }()
 
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+        commomInit()
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        commomInit()
+    }
+    
+    private func commomInit() {
+        self.layoutConfiguration = ChatLayoutConfiguration(contentInsets: UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0), scrollIndicatorInsets: UIEdgeInsets.zero)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
