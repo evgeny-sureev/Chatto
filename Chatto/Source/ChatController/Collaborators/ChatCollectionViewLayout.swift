@@ -128,10 +128,7 @@ open class ChatCollectionViewLayout: UICollectionViewLayout {
 
     open override func prepare() {
         super.prepare()
-        guard self.layoutNeedsUpdate else { return }
-        if let collectionView = collectionView {
-            guard self.layoutModel?.calculatedForWidth != collectionView.bounds.width else { return }
-        }
+        guard self.layoutNeedsUpdate || layoutModel.calculatedForWidth != collectionView?.bounds.width else { return }
         guard let delegate = self.delegate else {
             self.layoutModel = ChatCollectionViewLayoutModel.createEmptyModel()
             return
