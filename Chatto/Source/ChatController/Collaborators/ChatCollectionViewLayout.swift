@@ -156,7 +156,17 @@ open class ChatCollectionViewLayout: UICollectionViewLayout {
         // Find sticky cell and stick it to top
         var stickyCellAttributes: UICollectionViewLayoutAttributes?
         var currentStickyCellY = CGFloat.greatestFiniteMagnitude
-        let offset = collectionView!.contentOffset.y + collectionView!.contentInset.top
+        let offset: CGFloat
+        if let collectionView = collectionView {
+            let availableHeight = collectionView.bounds.height - (collectionView.contentInset.top + collectionView.contentInset.bottom)
+            if self.layoutModel.contentSize.height <= availableHeight {
+                offset = 0
+            } else {
+                offset = floor(collectionView.contentOffset.y + collectionView.contentInset.top)
+            }
+        } else {
+            offset = 0
+        }
         for attributes in self.layoutModel.stickyAttributes.reversed() {
             if attributes.originalFrame.minY < offset {
                 attributes.frame.origin.y = min(offset, currentStickyCellY - attributes.frame.height)
